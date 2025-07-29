@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vote for the Next Twitch Emote</title>
+  <style>
+    body { font-family: sans-serif; background: #111; color: #fff; text-align: center; }
+    .emote-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+    .emote-option { border: 2px solid #444; border-radius: 8px; padding: 10px; cursor: pointer; background: #222; }
+    .emote-option.selected { border-color: #0f0; background: #333; }
+    img { max-width: 100px; height: auto; display: block; margin: 0 auto 10px; }
+    button { padding: 10px 20px; font-size: 16px; margin-top: 20px; }
+    .results { margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <h1>Vote for the Next Twitch Emote</h1>
+  <div class="emote-grid" id="emoteGrid"></div>
+  <button onclick="submitVotes()">Submit Vote</button>
+  <div class="results" id="results"></div>
+
+  <script>
+    const emotes = [
+      { id: 'emote1', label: 'Angry Bean', src: 'emote1.png' },
+      { id: 'emote2', label: 'Sad Bean', src: 'emote2.png' },
+      { id: 'emote3', label: 'Cool Bean', src: 'emote3.png' },
+    ];
+
+    const votes = {};
+
+    const grid = document.getElementById('emoteGrid');
+    emotes.forEach(emote => {
+      const div = document.createElement('div');
+      div.className = 'emote-option';
+      div.onclick = () => {
+        div.classList.toggle('selected');
+        votes[emote.id] = div.classList.contains('selected');
+      };
+      div.innerHTML = `<img src="${emote.src}" alt="${emote.label}"><label>${emote.label}</label>`;
+      grid.appendChild(div);
+    });
+
+    function submitVotes() {
+      const selected = emotes.filter(e => votes[e.id]);
+      const resultText = selected.map(e => `✔️ ${e.label}`).join('<br>');
+      document.getElementById('results').innerHTML = `<h2>Your Vote:</h2>${resultText || 'None'}`;
+    }
+  </script>
+</body>
+</html>
